@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts
+        '@AppBundle/Resources/public/js/time-text/time-text.module.js'
+        '@AppBundle/Resources/public/js/time-text/time-text.component.js'
+        '@AppBundle/Resources/public/js/duration-form/duration-form.module.js'
+        '@AppBundle/Resources/public/js/duration-form/duration-form.component.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+    <duration-form></duration-form>
+{% endblock %}

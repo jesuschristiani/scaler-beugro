@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Duration app!{% endblock %}</title>
+        {% stylesheets '@vendor_css' %}
+            <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% block javascripts %}
+            {% javascripts
+                '@vendor_js'
+                '@app_js'
+            %}
+                <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
+    </head>
+
+    <body ng-app="app">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Beugró feladat</a>
+            </div>
+        </nav>
+        <main class="container">
+            {% block body %}{% endblock %}
+        </main>
+    </body>
+</html>

@@ -1,0 +1,38 @@
+version: '3.8'
+
+networks:
+  default:
+    external:
+      name: gateway
+
+services:
+  web:
+    image: nginx:latest
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./app:/var/www/html
+      - ./misc/docker/nginx/site.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.scaler-beugro.rule=Host(`scaler-beugro.local`)"
+      - "traefik.http.routers.scaler-beugro.entrypoints=default"
+      - "traefik.docker.network=default"
+      - "traefik.http.services.scaler-beugro.loadbalancer.server.port=80"
+
+  php-fpm:
+    image: php:7.2-fpm
+    build:
+      context: ./misc/docker/php
+      dockerfile: Dockerfile
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./app:/var/www/html
+      - ${SSH_AUTH_SOCK}:/tmp/agent.sock
+    environment:
+      SSH_AUTH_SOCK: /tmp/agent.sock
+
+
